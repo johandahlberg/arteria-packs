@@ -1,0 +1,219 @@
+---
+summary_host:
+  description: "Host to upload summaries to"
+  type: "string"
+  required: true
+summary_user:
+  description: "User to log in as on summary host"
+  type: "string"
+  required: true
+summary_host_key:
+  description: "Path to user's ssh key"
+  type: "string"
+  required: true
+summary_destination:
+  description: "Path to upload summaries to"
+  type: "string"
+  required: true
+summary_ngi_pipeline_reports_destination:
+  description: "Path to write ngi reports to"
+  type: "string"
+  required: true
+projman_install_location:
+  description: "Path to projman_filler"
+  type: "string"
+  required: true
+projman_connection_string:
+  description: "Connection string to projman database"
+  type: "string"
+  required: true
+  secret: true
+biotank_hosts:
+  description: "List of biotanks"
+  type: "array"
+  required: true
+  items:
+    type: "string"
+biotank_user:
+  description: "User to log in as on biotanks"
+  type: "string"
+  required: true
+biotank_user_key:
+  description: "Path to user's ssh key"
+  type: "string"
+  required: true
+remote_host:
+  description: "Host to upload runfolders to"
+  type: "string"
+  required: true
+remote_user:
+  description: "User to log in as on remote_host"
+  type: "string"
+  required: true
+remote_host_key:
+  description: "Path to user's ssh key"
+  type: "string"
+  required: true
+remote_destination:
+  description: "Path to upload runfolders to"
+  type: "string"
+  required: true
+remote_sisyphus_location:
+  description: "Path to sisyphus on remote_host"
+  type: "string"
+  required: true
+ngi_pipeline_url:
+  description: "Pipeline URL"
+  type: "string"
+  required: true
+irma_api_key:
+  description: "API key for irma"
+  type: "string"
+  required: true
+  secret: true
+irma_remote_path:
+  description: "Irma path"
+  type: "string"
+  required: true
+irma_reports_remote_path:
+  description: "Irma reports path"
+  type: "string"
+  required: true
+irma_checksum_base_url:
+  description: "Irma checksum service URL"
+  type: "string"
+  required: true
+irma_siswrap_base_url:
+  description: "Irma siswrap service URL"
+  type: "string"
+  required: true
+irma_archive_upload_base_url:
+  description: "Irma archive upload service URL"
+  type: "string"
+  required: true
+archive_db_base_url:
+  description: "Irma archive db service URL"
+  type: "string"
+  required: true
+delivery_service_url:
+  description: "Irma delivery service URL"
+  type: "string"
+  required: true
+archive_verify_base_url:
+  description: "Irma verify service URL"
+  type: "string"
+  required: true
+archive_db_verify_lookback_window:
+  description: "The number of days we want to look back when picking an unverified but uploaded archive. The exact time period will be adjusted by the safety margin setting as well though."
+  type: "integer"
+  required: true
+archive_db_verify_safety_margin:
+  description: "Safety margin (days) when checking for an unverified but uploaded archive. The margin is meant to ensure that we're not verifying something that PDC still keeps on disk - instead it should have been flushed to tape."
+  type: "integer"
+  required: true
+irma_replace_expressions:
+  description: "List of sed-style replace expressions"
+  type: "array"
+  required: true
+  items:
+    type: "string"
+send_mail_to:
+  description: "E-Mail address to send error messages to"
+  type: "string"
+  required: true
+runfolder_service_port:
+  description: "Listen port of the runfolder service on biotanks"
+  type: "integer"
+  required: true
+bcl2fastq_service_port:
+  description: "Listen port of the bcl2fastq service on biotanks"
+  type: "integer"
+  required: true
+siswrap_service_port:
+  description: "Listen port of the siswrap service on biotanks"
+  type: "integer"
+  required: true
+checkqc_service_port:
+  description: "Listen port of the checkqc service on biotanks"
+  type: "integer"
+  required: true
+archive_upload_service_port:
+  description: "Listen port of the archive upload service on biotanks"
+  type: "integer"
+  required: true
+archive_remove_service_port:
+  description: "Listen port of the archive remove service on biotanks"
+  type: "integer"
+  required: true
+runfolder_svc_urls:
+  description: "List of runfolder services to poll"
+  type: "array"
+  required: true
+  items:
+    type: "string"
+incoming_svc_urls:
+  description: "List of incoming services to poll"
+  type: "array"
+  required: true
+  items:
+    type: "object"
+    properties:
+      url:
+        description: "URL of the incoming service"
+        type: "string"
+        required: true
+      dest_folder:
+        description: "Folder to move fully uploaded runfolders to"
+        type: "string"
+        required: true
+      remote_user:
+        description: "Remote user to log in as for the move action"
+        type: "string"
+        required: true
+      user_key:
+        description: "Path to user's ssh key"
+        type: "string"
+        required: true
+charon_api_token:
+  description: "API token for charon service"
+  type: "string"
+  required: true
+  secret: true
+charon_base_url:
+  description: "Charon service URL"
+  type: "string"
+  required: true
+slack_webhook_url:
+  description: "URL for the slack webhook (including token)"
+  type: "string"
+  required: true
+  secret: true
+charon_status_report_slack_channel:
+  description: "Slack channel to post Charon status reports to"
+  type: "string"
+  required: true
+check_cert_slack_channel:
+  description: "Slack channel to post certificate expiration notices to"
+  type: "string"
+  required: true
+delivery_workflow_status_slack_channel:
+  description: "Slack channel to post workflow status updates to"
+  type: "string"
+  required: true
+archive_status_slack_channel:
+  description: "Slack channel to post archive status updates to"
+  type: "string"
+  required: true
+supr_api_user:
+  description: "SUPR user"
+  type: "string"
+  required: true
+supr_api_key:
+  description: "SUPR key"
+  type: "string"
+  required: true
+  secret: true
+supr_api_url:
+  description: "SUPR URL"
+  type: "string"
+  required: true
