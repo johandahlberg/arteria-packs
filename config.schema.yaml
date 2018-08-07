@@ -141,10 +141,6 @@ archive_upload_service_port:
   description: "Listen port of the archive upload service on biotanks"
   type: "integer"
   required: true
-archive_remove_service_port:
-  description: "Listen port of the archive remove service on biotanks"
-  type: "integer"
-  required: true
 runfolder_svc_urls:
   description: "List of runfolder services to poll"
   type: "array"
