@@ -1,5 +1,5 @@
 from st2common.runners.base_action import Action
-import os.path
+import os
 
 class DownloadSamplesheetMount(Action):
     """
@@ -9,14 +9,22 @@ class DownloadSamplesheetMount(Action):
     """
 
     def run(self, flowcell_name, samplesheet_path):
-        path_and_file = os.path.join(samplesheet_path, flowcell_name + '_samplesheet.csv')
         try:
-            with open(path_and_file, 'r') as samplesheet_file:
-                samplesheet = samplesheet_file.read()
+            samplesheets = [f for f in os.listdir(samplesheet_path) if os.path.isfile(os.path.join(samplesheet_path, f)) and f.endswith(flowcell_name + "_samplesheet.csv")]
+            if (samplesheets):
+                if(len(samplesheets) > 1):
+                    raise ValueError('Multiple matching samplesheets found! ' + ' '.join(name for name in samplesheets ))
+                else:
+                    with open(os.path.join(samplesheet_path, samplesheets[0])) as samplesheet_file:
+                        samplesheet = samplesheet_file.read()
+            else:
+                raise ValueError('No matching samplesheet found!')
 
         except IOError as err:
-            self.logger.error('IOError while attempting to read local samplesheet: {}'.format(err.message))
-            raise err
+            self.logger.error('IOError while attempting to read samplesheet on disk: {}'.format(err.message))
+            raise
+        except ValueError as err:
+            self.logger.error('Error scanning for samplesheet on disk: {}'.format(err.message))
+            raise
 
         return (True, samplesheet)
-
