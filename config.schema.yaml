@@ -79,6 +79,22 @@ irma_reports_remote_path:
   description: "Irma reports path"
   type: "string"
   required: true
+irma_summary_ssh_user:
+  description: "SSH user for syncing summaries with irma"
+  type: "string"
+  required: true
+irma_summary_ssh_key:
+  description: "Path to SSH key for syncing summaries with irma"
+  type: "string"
+  required: true
+irma_summary_ssh_cert:
+  description: "Path to SSH certificate for syncing summaries with irma"
+  type: "string"
+  required: true
+irma_summary_host:
+  description: "irma hostname to sync summaries with"
+  type: "string"
+  required: true
 irma_checksum_base_url:
   description: "Irma checksum service URL"
   type: "string"
