@@ -9,7 +9,7 @@ import requests
 from requests.exceptions import RequestException, HTTPError
 
 # Needs to be run in a Stackstorm virtualenv
-from st2actions.runners.pythonrunner import Action
+from st2common.runners.base_action import Action
 
 class PollStatus(Action):
     """

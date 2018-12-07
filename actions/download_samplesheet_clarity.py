@@ -1,4 +1,4 @@
-from st2actions.runners.pythonrunner import Action
+from st2common.runners.base_action import Action
 
 from clarity_ext.context import ExtensionContext
 from genologics.lims import *

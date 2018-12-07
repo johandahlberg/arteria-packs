@@ -5,7 +5,7 @@ import json
 from requests.exceptions import RequestException
 
 # Needs to be run in a Stackstorm virtualenv
-from st2actions.runners.pythonrunner import Action
+from st2common.runners.base_action import Action
 
 
 class RunCheckQC(Action):

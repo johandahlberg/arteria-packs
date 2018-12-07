@@ -1,6 +1,6 @@
 import sys
 
-from st2actions.runners.pythonrunner import Action
+from st2common.runners.base_action import Action
 
 class ParseArgumentsToJson(Action):
     def _strip_null_values(self, body):
