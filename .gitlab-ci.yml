@@ -26,6 +26,7 @@ before_script:
   - python -V
   - conda create -y -p ./venv python=2.7
   - source activate ./venv
+  - pip install --upgrade pip
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
   - ./utils/prepare_test_env.sh
