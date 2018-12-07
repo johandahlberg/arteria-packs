@@ -23,5 +23,5 @@ pip install -r ./st2/requirements.txt
 pip install -r ./st2/test-requirements.txt
 
 # Exit the virtualenv
-deactivate
+source deactivate
 
