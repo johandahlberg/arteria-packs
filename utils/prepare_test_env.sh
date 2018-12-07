@@ -1,9 +1,7 @@
 #!/bin/bash
 set -o errexit
 
-# Setup virtualenv
-virtualenv venv
-source venv/bin/activate
+source activate ./venv
 
 # Ensure you have the latest version of pip
 pip install --upgrade pip
