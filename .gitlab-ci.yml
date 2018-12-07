@@ -34,6 +34,9 @@ unit-test:
     - ./utils/prepare_test_env.sh
     - ./utils/run_tests.sh $PWD 
   stage: unit-test
+  except:
+    - next
+    - master
   tags:
     - linux
 
@@ -53,7 +56,7 @@ create-candidate:
 deploy-to-staging:
   stage: deploy
   script:
-      - echo "Watch the world burn!"
+      - sudo /opt/sysman/cmd/deploy/staging/products/snpseq-packs $CI_COMMIT_SHA
   environment:
     name: staging
     url: https://mm-xart001.snpseq.medsci.uu.se
