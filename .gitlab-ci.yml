@@ -7,7 +7,6 @@ variables:
 stages:
   # Development
   - unit-test          # Run unit tests
-  - build
   - deploy             # Deploy the built artifacts to different environments
 
   # Candidate
@@ -30,20 +29,6 @@ before_script:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
   - ./utils/prepare_test_env.sh
-
-build:
-  script:
-    - echo "The build job simply packages the python code together in an artifact"
-    - mkdir bin
-    - cp -r ./* bin/
-  stage: build
-  artifacts:
-    paths:
-      - ./bin
-  only:
-    - develop
-  tags:
-    - linux
 
 unit-test:
   script:
