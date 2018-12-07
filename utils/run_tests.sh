@@ -33,7 +33,7 @@ function join { local IFS="$1"; shift; echo "$*"; }
 PACK_PATH=$1
 ST2_REPO_PATH="./st2/"
 
-source venv/bin/activate
+source activate venv
 
 SCRIPT_PATH=$(readlink -f $0)
 DIRECTORY_PATH=$(dirname ${SCRIPT_PATH})
