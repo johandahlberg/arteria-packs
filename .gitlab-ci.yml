@@ -1,0 +1,163 @@
+# Based on the template https://gitlab.snpseq.medsci.uu.se/shared/snpseq-product
+# Template version 1.0
+
+variables:
+  GIT_STRATEGY: fetch
+
+stages:
+  # Development
+  - unit-test          # Run unit tests
+  - build
+  - deploy             # Deploy the built artifacts to different environments
+
+  # Candidate
+  - create-candidate   # Create a candidate in the next branch
+  
+  # Hotfix (NOTE: not fully tested)
+  - create-hotfix      # Create a hotfix (if next is in code-freeze)
+  
+  # Candidate or hotfix
+  - deploy-to-staging  # Deploy to staging (from the next or hotfix branch)
+  - version            # Decide if this is a major, minor or a patch
+  - iterate            # Increase the rc part of the version
+  - accept             # Candidate accepted to the master branch
+  
+before_script:
+  - virtualenv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+  - pip install -r requirements-test.txt
+  - ./utils/prepare_test_env.sh
+
+build:
+  script:
+    - echo "The build job simply packages the python code together in an artifact"
+    - mkdir bin
+    - cp -r ./* bin/
+  stage: build
+  artifacts:
+  paths:
+    - ./bin
+  only:
+    - develop
+  tags:
+    - linux
+
+unit-test:
+  script:
+    - ./utils/run_tests.sh $PWD 
+  stage: unit-test
+  tags:
+    - linux
+
+create-candidate:
+  stage: create-candidate
+  script:
+    - echo "Pushing to the next branch on gitlab"
+    - git checkout -B next
+    - git remote set-url origin --push git@gitlab.snpseq.medsci.uu.se:shared/snpseq_packs.git
+    - ssh-agent bash -c "ssh-add ~/.ssh/gitlab-runner; git push origin next"
+  when: manual
+  only:
+    - develop
+  tags:
+    - linux
+
+deploy-to-staging:
+  stage: deploy
+  script:
+      - echo "Watch the world burn!"
+  environment:
+    name: staging
+    url: mm-xart001
+  tags:
+    - linux
+  only:
+    - next
+    - hotfix
+
+# NOTE: gitlab doesn't (yet) provide parameters to a manual step, so versioning
+# is handled by 4 different manual tasks (major, minor, patch, rc) HACK
+# https://gitlab.com/gitlab-org/gitlab-ce/issues/24935
+# NOTE: The user might accidentally choose more than one of these. When
+# they provide variables, this should not be an issue.
+major:
+  when: manual
+  stage: version
+  script:
+    - change-version major "#dev"
+  only:
+    - next
+  tags:
+    - linux
+
+minor:
+  when: manual
+  stage: version
+  script:
+    - change-version minor "#dev"
+  only:
+    - next
+    - hotfix
+  tags:
+    - linux
+
+patch:
+  when: manual
+  stage: version
+  script:
+    - change-version patch "#dev"
+  only:
+    - next
+    - hotfix
+  tags:
+    - linux
+
+iterate:
+  when: manual
+  stage: iterate
+  script:
+    - change-version rc "#dev"
+  only:
+    - next
+    - hotfix
+  tags:
+    - linux
+
+accept:
+  when: manual
+  stage: accept
+  script:
+    - echo "Removing the RC tag from the current version"
+    - change-version accept "#dev"
+    - echo "Pushing to the master branch on gitlab"
+    - git checkout -B master
+    - git remote set-url origin --push git@gitlab.snpseq.medsci.uu.se:shared/snpseq_packs.git
+    - ssh-agent bash -c "ssh-add ~/.ssh/gitlab-runner; git push origin master"
+  only:
+    - next
+  tags:
+    - linux
+
+sync-branches:
+  stage: accept
+  script:
+    - echo "Pushing to the develop branch on gitlab"
+    - git checkout -B develop
+    - git remote set-url origin --push git@gitlab.snpseq.medsci.uu.se:shared/snpseq_packs.git
+    - ssh-agent bash -c "ssh-add ~/.ssh/gitlab-runner; git push origin develop"
+  only:
+    - master
+    
+create-hotfix:
+  stage: create-hotfix
+  script:
+    - echo "Create a hotfix branch from the current branch (usually master). This will overwrite the current hotfix branch."
+    - git checkout -B hotfix
+    - git remote set-url origin --push git@gitlab.snpseq.medsci.uu.se:shared/snpseq_packs.git
+    - ssh-agent bash -c "ssh-add ~/.ssh/gitlab-runner; git push -f origin hotfix"
+  when: manual
+  only:
+    - develop
+  tags:
+    - linux
