@@ -36,8 +36,8 @@ build:
     - cp -r ./* bin/
   stage: build
   artifacts:
-  paths:
-    - ./bin
+    paths:
+      - ./bin
   only:
     - develop
   tags:
