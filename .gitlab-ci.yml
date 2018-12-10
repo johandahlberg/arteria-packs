@@ -72,6 +72,7 @@ create-candidate:
 deploy-to-staging:
   stage: deploy
   script:
+      - create-package-from-bin $CI_PROJECT_NAME $CI_COMMIT_SHA
       - sudo /opt/sysman/cmd/deploy/staging/products/snpseq-packs $CI_COMMIT_SHA
   environment:
     name: staging
