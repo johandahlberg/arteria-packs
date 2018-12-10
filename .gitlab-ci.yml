@@ -33,7 +33,7 @@ unit-test:
     - pip install -r requirements.txt
     - pip install -r requirements-test.txt
     - ./utils/prepare_test_env.sh
-    - ./utils/run_tests.sh $PWD 
+    - st2-run-pack-tests -p /opt/stackstorm/packs/snpseq_packs -j
   stage: unit-test
   except:
     - next
