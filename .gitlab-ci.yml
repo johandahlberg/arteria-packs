@@ -7,6 +7,7 @@ variables:
 stages:
   # Development
   - unit-test          # Run unit tests
+  - build              # Build package
   - deploy             # Deploy the built artifacts to different environments
 
   # Candidate
@@ -39,6 +40,21 @@ unit-test:
     - master
   tags:
     - linux
+
+build:
+  script:
+    - mkdir -p bin
+    - rsync -r --exclude bin ./* bin/
+  stage: build
+  tags:
+    - linux
+  only:
+    - develop
+    - next
+    - hotfix
+  artifact:
+    path:
+      - bin/
 
 create-candidate:
   stage: create-candidate
