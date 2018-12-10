@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Box Specifications
     arteria.vm.provider :virtualbox do |vb|
-      vb.memory = 1028
+      vb.memory = 4048
       vb.cpus = 2
     end
 
