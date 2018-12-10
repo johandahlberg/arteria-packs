@@ -1,7 +1,7 @@
 snpseq_packs
 -------------
 
-StackStorm pack to setup automation workflow taking data from the sequencer to delivery on the remote host...
+StackStorm pack to setup automation workflow taking data from the sequencer to delivery on the remote host....
 
 Development and testing
 -----------------------
