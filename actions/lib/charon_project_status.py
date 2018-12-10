@@ -6,7 +6,7 @@ import StringIO
 
 from slack import SlackNotifier
 
-from st2actions.runners.pythonrunner import Action
+from st2common.runners.base_action import Action
 from tabulate import tabulate
 
 __author__ = 'Pontus'

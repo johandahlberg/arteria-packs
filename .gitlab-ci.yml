@@ -33,7 +33,7 @@ unit-test:
     - pip install -r requirements.txt
     - pip install -r requirements-test.txt
     - ./utils/prepare_test_env.sh
-    - ./utils/run_tests.sh $PWD 
+    - ST2_REPO_PATH=./st2 ./st2/st2common/bin/st2-run-pack-tests -p $PWD
   stage: unit-test
   except:
     - next

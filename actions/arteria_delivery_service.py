@@ -7,7 +7,7 @@ from urlparse import urlparse
 
 
 # Needs to be run in a Stackstorm virtualenv
-from st2actions.runners.pythonrunner import Action
+from st2common.runners.base_action import Action
 
 
 class ProjectAndStageId(object):
