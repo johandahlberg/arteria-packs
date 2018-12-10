@@ -61,7 +61,7 @@ deploy-to-staging:
     name: staging
     url: https://mm-xart001.snpseq.medsci.uu.se
   tags:
-    - linux
+    - deploys
   only:
     - next
     - hotfix
