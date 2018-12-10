@@ -52,8 +52,8 @@ build:
     - develop
     - next
     - hotfix
-  artifact:
-    path:
+  artifacts:
+    paths:
       - bin/
 
 create-candidate:
