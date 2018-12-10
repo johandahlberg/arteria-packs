@@ -27,6 +27,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     arteria.vm.provision "shell", 
       inline: "sudo apt-get update && sudo apt-get install -y curl python-virtualenv vim"
 
+    $setup_conda = <<-SCRIPT
+      wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh && \
+      bash Miniconda2-latest-Linux-x86_64.sh -b -u && \
+      echo 'export PATH="/home/vagrant/miniconda2/bin:$PATH"' >> /home/vagrant/.bashrc
+      SCRIPT
+
+    arteria.vm.provision "shell", inline: $setup_conda
+
     arteria.vm.provision "shell", 
       inline: "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=#{arteriauser} --password=#{arteriapasswd} --version=#{st2version}"
 

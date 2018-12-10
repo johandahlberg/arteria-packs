@@ -23,15 +23,17 @@ cd /vagrant
 # working directory is the packs directory i.e. /snpseq_packs in
 # the vagrant environment
 
-# Prepare the test environment environment (this only needs to be
-# done when setting up for the first time), run this:
+# Create the conda environment you need to run the tests
+conda create -p ./venv python=2
+
+# Activate the virtual environment
+source activate ./venv
+
+# Prepare the test environment with
 ./utils/prepare_test_env.sh
 
-# Note that this will checkout the st2 repo and create a virtual env called
-# venv in the working directory
-
-# Run the tests
-./utils/run_tests.sh /opt/stackstorm/packs/snpseq_packs
+# Run the tests using the provided utility script
+st2-run-pack-tests -p /opt/stackstorm/packs/snpseq_packs
 
 # To test registering all pack components run
 ./utils/st2-check-register-pack-resources utils/st2.tests.conf /opt/stackstorm/packs/snpseq_packs
