@@ -1,5 +1,6 @@
 #!/bin/bash
 set -o errexit
+set -o xtrace
 
 # Ensure you have the latest version of pip
 pip install --upgrade pip
