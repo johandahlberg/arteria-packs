@@ -1,2 +1,7 @@
 *.pyc
 *.swp
+.idea
+.vagrant
+src
+st2
+venv

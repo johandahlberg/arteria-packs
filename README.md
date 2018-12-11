@@ -20,7 +20,7 @@ cd /vagrant
 # Now you can start developing on the packs
 
 # Note that all the scripts run below this point assume that your current
-# working directory is the packs directory i.e. /snpseq_packs in
+# working directory is the packs directory i.e. /vagrant in
 # the vagrant environment
 
 # Create the conda environment you need to run the tests
