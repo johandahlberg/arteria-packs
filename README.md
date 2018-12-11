@@ -20,7 +20,7 @@ cd /vagrant
 # Now you can start developing on the packs
 
 # Note that all the scripts run below this point assume that your current
-# working directory is the packs directory i.e. /snpseq_packs in
+# working directory is the packs directory i.e. /vagrant in
 # the vagrant environment
 
 # Create the conda environment you need to run the tests
@@ -34,9 +34,6 @@ source activate ./venv
 
 # Run the tests using the provided utility script
 st2-run-pack-tests -p /opt/stackstorm/packs/snpseq_packs
-
-# To test registering all pack components run
-./utils/st2-check-register-pack-resources utils/st2.tests.conf /opt/stackstorm/packs/snpseq_packs
 
 ```
 

@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     $setup_conda = <<-SCRIPT
       wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh && \
-      bash Miniconda2-latest-Linux-x86_64.sh -b -u && \
+      bash Miniconda2-latest-Linux-x86_64.sh -b -p /home/vagrant/miniconda2 && \
       echo 'export PATH="/home/vagrant/miniconda2/bin:$PATH"' >> /home/vagrant/.bashrc
       SCRIPT
 
