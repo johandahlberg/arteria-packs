@@ -35,9 +35,6 @@ source activate ./venv
 # Run the tests using the provided utility script
 st2-run-pack-tests -p /opt/stackstorm/packs/snpseq_packs
 
-# To test registering all pack components run
-./utils/st2-check-register-pack-resources utils/st2.tests.conf /opt/stackstorm/packs/snpseq_packs
-
 ```
 
 Getting an authentication token
