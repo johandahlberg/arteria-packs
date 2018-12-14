@@ -43,6 +43,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     arteria.vm.provision "shell",
       inline: "st2ctl reload"
+
+    arteria.vm.provision "shell",
+      inline: "st2 run packs.setup_virtualenv packs=snpseq_packs"
   end
 
 end
