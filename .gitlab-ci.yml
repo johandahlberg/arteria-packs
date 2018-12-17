@@ -45,6 +45,7 @@ build:
   script:
     - mkdir -p bin
     - rsync -r --exclude bin ./* bin/
+    - git rev-parse HEAD > ./bin/version.txt
   stage: build
   tags:
     - linux
