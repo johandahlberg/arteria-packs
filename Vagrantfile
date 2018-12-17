@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     $setup_conda = <<-SCRIPT
       wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh && \
-      bash Miniconda2-latest-Linux-x86_64.sh -b -p /home/vagrant/miniconda2 && \
+      bash Miniconda2-latest-Linux-x86_64.sh -b -u -p /home/vagrant/miniconda2 && \
       echo 'export PATH="/home/vagrant/miniconda2/bin:$PATH"' >> /home/vagrant/.bashrc
       SCRIPT
 
@@ -41,6 +41,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     arteria.vm.provision "shell", 
       inline: "ln -s /vagrant /opt/stackstorm/packs/snpseq_packs"
 
+    arteria.vm.provision "shell",
+      inline: "st2ctl reload"
+
+    arteria.vm.provision "shell",
+      inline: "st2 run packs.setup_virtualenv packs=snpseq_packs"
   end
 
 end

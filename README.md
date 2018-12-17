@@ -37,6 +37,10 @@ st2-run-pack-tests -p /opt/stackstorm/packs/snpseq_packs
 
 ```
 
+### Configuration
+
+You will also need a configuration file on your Vagrant box at `/opt/stackstorm/configs/snpseq_packs.yaml`. If you have access to the staging machine, copy the configuration file that exists at that path. Otherwise, see config.schema.yml for the list of required values, and create your own snpseq_packs.yaml according to [the required format](https://docs.stackstorm.com/reference/pack_configs.html).
+
 Getting an authentication token
 -------------------------------
 
