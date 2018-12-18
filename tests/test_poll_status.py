@@ -51,7 +51,7 @@ class PollStatusTestCase(BaseActionTestCase):
                                              irma_mode=False,
                                              max_retries=1)
 
-            post_mock.assert_called_with(fake_url, data=fake_body, verify=False)
+            post_mock.assert_called_with(fake_url, data=json.dumps(fake_body), verify=False)
             get_mock.assert_called_with(response_link, verify=False)
 
             self.assertTrue(exit_code == expected_exit_status)
