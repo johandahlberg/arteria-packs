@@ -39,13 +39,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       inline: "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=#{arteriauser} --password=#{arteriapasswd} --version=#{st2version}"
 
     arteria.vm.provision "shell", 
-      inline: "ln -s /vagrant /opt/stackstorm/packs/snpseq_packs"
+      inline: "ln -s /vagrant /opt/stackstorm/packs/snpseq_packs && echo 'Link creation successful'"
 
     arteria.vm.provision "shell",
       inline: "st2ctl reload"
 
     arteria.vm.provision "shell",
       inline: "st2 run packs.setup_virtualenv packs=snpseq_packs"
+
+    # Create an example config from the schema and load it
+    arteria.vm.provision "shell",
+      inline: " sudo sh -c '/opt/stackstorm/virtualenvs/snpseq_packs/bin/python /vagrant/scripts/generate_example_config_from_schema.py /vagrant/config.schema.yaml > /opt/stackstorm/configs/snpseq_packs.yaml'"
+
+    arteria.vm.provision "shell",
+      inline: "sudo st2ctl reload --register-configs"
+
   end
 
 end
