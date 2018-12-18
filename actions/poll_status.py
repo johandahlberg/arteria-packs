@@ -3,6 +3,7 @@
 import datetime
 import time
 from urlparse import urlparse
+import json
 
 import requests
 
@@ -48,7 +49,17 @@ class PollStatus(Action):
                                             endpoint_parsed.query)
 
         try:
-            response = requests.post(endpoint, json=body, verify=verify_ssl_cert)
+            # Note This is a hack to get around problems with newline escaping
+            # in the samplesheet, which for some reason seems to have broken
+            # by st2 2.9.
+            if body.get('samplesheet'):
+                body['samplesheet'] = body['samplesheet'].decode('unicode_escape').encode('UTF-8')
+            # Remove any values that are empty.
+            cleaned_body = {}
+            for key, value in body.iteritems():
+                if value:
+                    cleaned_body[key] = value
+            response = requests.post(endpoint, data=json.dumps(cleaned_body), verify=verify_ssl_cert)
             response.raise_for_status()
             response_json = response.json()
 
