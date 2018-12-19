@@ -137,7 +137,7 @@ workflows:
                 on-error:
                     - download_samplesheet_clarity
                 on-success:
-                    - construct_bcl2fastq_body
+                    - run_bcl2fastq
 
             download_samplesheet_clarity:
                 action: snpseq_packs.download_samplesheet_clarity
@@ -148,24 +148,6 @@ workflows:
                 publish:
                     samplesheet_string: "<% task(download_samplesheet_clarity).result.result %>"
                 on-success:
-                    - construct_bcl2fastq_body
-
-            # Since we don't want to pass empty values into
-            # bcl2fastq-ws, we remove any empty keys from
-            # this body.
-            construct_bcl2fastq_body:
-                action: snpseq_packs.parse_bcl2fastq_args
-                input:
-                    samplesheet: "<% $.samplesheet_string %>"
-                    bcl2fastq_version: "<% $.bcl2fastq_version %>"
-                    barcode_mismatches: "<% $.barcode_mismatches %>"
-                    tiles: "<% $.tiles %>"
-                    use_base_mask: "<% $.use_base_mask %>"
-                    additional_args: "<% $.bcl2fastq_additional_arguments %>"
-                    create_indexes: "True"
-                publish:
-                    bcl2fastq_body: <% task(construct_bcl2fastq_body).result.result %>
-                on-success:
                     - run_bcl2fastq
 
             run_bcl2fastq:
@@ -173,7 +155,14 @@ workflows:
                 input:
                     url: "http://<% $.host %>:<% $.bcl2fastq_service_port %>/api/1.0/start/<% $.runfolder_name %>"
                     timeout: 86400 # Wait for 24 h before timing out.
-                    body: <% $.bcl2fastq_body %>
+                    body:
+                      samplesheet: "<% $.samplesheet_string %>"
+                      bcl2fastq_version: "<% $.bcl2fastq_version %>"
+                      barcode_mismatches: "<% $.barcode_mismatches %>"
+                      tiles: "<% $.tiles %>"
+                      use_base_mask: "<% $.use_base_mask %>"
+                      additional_args: "<% $.bcl2fastq_additional_arguments %>"
+                      create_indexes: "True"
                 on-success:
                     - save_bcl2fastq_version
 
