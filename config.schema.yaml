@@ -42,6 +42,10 @@ biotank_user_key:
   description: "Path to user's ssh key"
   type: "string"
   required: true
+biotank_archive_folder:
+  description: "Relative path to the archived folder on the biotanks"
+  type: "string"
+  required: true
 remote_host:
   description: "Host to upload runfolders to"
   type: "string"
@@ -125,6 +129,10 @@ archive_db_verify_lookback_window:
   required: true
 archive_db_verify_safety_margin:
   description: "Safety margin (days) when checking for an unverified but uploaded archive. The margin is meant to ensure that we're not verifying something that PDC still keeps on disk - instead it should have been flushed to tape."
+  type: "integer"
+  required: true
+days_to_keep_archived_runfolder:
+  description: "Number of days that must have passed since last modification for an archived runfolder to be removed"
   type: "integer"
   required: true
 irma_replace_expressions:
