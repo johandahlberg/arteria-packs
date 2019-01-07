@@ -29,11 +29,9 @@ projman_connection_string:
   required: true
   secret: true
 biotank_hosts:
-  description: "List of biotanks"
-  type: "array"
+  description: "List of biotanks, comma-separated"
+  type: "string"
   required: true
-  items:
-    type: "string"
 biotank_user:
   description: "User to log in as on biotanks"
   type: "string"
