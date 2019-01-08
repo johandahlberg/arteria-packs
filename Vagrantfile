@@ -54,6 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     arteria.vm.provision "shell",
       inline: "sudo st2ctl reload --register-configs"
 
+    arteria.vm.provision "shell",
+      inline: "echo 'DEV' > /vagrant/version.txt && echo 'Created dummy version.txt file'"
   end
-
 end
