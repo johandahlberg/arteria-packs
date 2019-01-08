@@ -5,3 +5,6 @@
 src
 st2
 venv
+*~
+version.txt
+project_email.csv
