@@ -1,13 +1,12 @@
 import mock
 import json
-
 import lib.supr_utils
 
 from st2tests.base import BaseActionTestCase
+from lib.retry_session import RetrySession
 
 
 class SuprTestCase(BaseActionTestCase):
-    #action_cls = supr.Supr
     action_cls = lib.supr_utils.SuprUtils
 
     class MockPostResponse:
@@ -59,7 +58,7 @@ class SuprTestCase(BaseActionTestCase):
 
     def test_create_delivery_project(self):
         with mock.patch.object(
-            lib.supr_utils.requests,
+            RetrySession,
             'post',
             side_effect=SuprTestCase.post_mock_reponse
         ) as post_mock:
@@ -74,9 +73,9 @@ class SuprTestCase(BaseActionTestCase):
 
     def test_create_delivery_project_fail(self):
         with mock.patch.object(
-            lib.supr_utils.requests,
-            'post',
-            return_value=SuprTestCase.MockPostResponse("some fail content", status_code=400)
+                RetrySession,
+                'post',
+                return_value=SuprTestCase.MockPostResponse("some fail content", status_code=400)
         ) as post_mock:
             with self.assertRaises(AssertionError) as ae:
                 self.setup_and_run_create_delivery_project()

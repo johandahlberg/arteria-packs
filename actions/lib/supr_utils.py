@@ -3,6 +3,7 @@ import json
 import math
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from lib.retry_session import RetrySession
 
 class SuprUtils:
 
@@ -77,9 +78,10 @@ class SuprUtils:
                 'ngi_sensitive_data': project_info[ngi_project_name]['sensitive']
             }
 
-            response = requests.post(create_delivery_project_url,
-                                     data=json.dumps(payload),
-                                     auth=(user, key))
+            rs = RetrySession()
+            response = rs.post(create_delivery_project_url,
+                               data=json.dumps(payload),
+                               auth=(user, key))
 
             if response.status_code != 200:
                 raise AssertionError("Status code returned when trying to create delivery "
