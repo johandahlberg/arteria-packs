@@ -93,11 +93,11 @@ workflows:
                     - get_year
 
             get_year:
-              action: core.local
+              action: snpseq_packs.get_year_from_runfolder_name
               input:
-                cmd: echo 20$(echo <% $.runfolder_name %> | cut -c1-2)
+                  runfolder_name: <% $.runfolder_name %>
               publish:
-                current_year: <% task(get_year).result.stdout %>
+                current_year: <% task(get_year).result.result %>
               on-success:
                 - rsync_to_summary_host_before_demultiplexing
 
