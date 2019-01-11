@@ -1,0 +1,10 @@
+---
+name: get_year_from_runfolder_name
+runner_type: python-script
+description: Take a runfolder name and parse the year from it
+enabled: true
+entry_point: lib/get_year_from_runfolder_name.py
+parameters:
+  runfolder_name:
+    type: string
+    description: "Name of the runfolder"
