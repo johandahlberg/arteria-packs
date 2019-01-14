@@ -6,7 +6,7 @@ from download_samplesheet_mount import DownloadSamplesheetMount
 class DownloadSamplesheetMountTestCase(BaseActionTestCase):
     action_cls = DownloadSamplesheetMount
     samplesheet_names_and_contents = []
-    tempdir = '/tmp'
+    tempdir = None
     test_files = []
 
     @classmethod
@@ -58,8 +58,11 @@ class DownloadSamplesheetMountTestCase(BaseActionTestCase):
         expected_exception_text = "No matching samplesheet found"
         self.run_action_and_check_exception(flowcell_name, samplesheet_path, expected_exception_text)
 
-#    @classmethod
-#    def tearDownClass(cls):
-#        #Remove tempfiles here
-#        pass
+    @classmethod
+    def tearDownClass(cls):
+        #Remove tempfiles here
+        for test_file in cls.test_files:
+            os.remove(test_file)
 
+        if (cls.tempdir):
+            os.rmdir(cls.tempdir)
