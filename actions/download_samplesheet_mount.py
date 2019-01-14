@@ -8,12 +8,17 @@ class DownloadSamplesheetMount(Action):
     Keyed on the flowcell id.
     """
 
+    def scan_for_samplesheets(self, flowcell_name, samplesheet_path):
+        samplesheets = [f for f in os.listdir(samplesheet_path) if os.path.isfile(os.path.join(samplesheet_path, f)) and f.endswith(flowcell_name + "_samplesheet.csv")]
+        return samplesheets
+
+
     def run(self, flowcell_name, samplesheet_path):
         try:
-            samplesheets = [f for f in os.listdir(samplesheet_path) if os.path.isfile(os.path.join(samplesheet_path, f)) and f.endswith(flowcell_name + "_samplesheet.csv")]
+            samplesheets = self.scan_for_samplesheets(flowcell_name, samplesheet_path)
             if (samplesheets):
                 if(len(samplesheets) > 1):
-                    raise ValueError('Multiple matching samplesheets found! ' + ' '.join(name for name in samplesheets ))
+                    raise ValueError('Multiple matching samplesheets found! ' + ' '.join(samplesheets))
                 else:
                     with open(os.path.join(samplesheet_path, samplesheets[0])) as samplesheet_file:
                         samplesheet = samplesheet_file.read()
