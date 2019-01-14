@@ -60,7 +60,6 @@ class DownloadSamplesheetMountTestCase(BaseActionTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        #Remove tempfiles here
         for test_file in cls.test_files:
             os.remove(test_file)
 
