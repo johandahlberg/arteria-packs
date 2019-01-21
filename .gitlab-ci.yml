@@ -84,6 +84,20 @@ deploy-to-staging:
     - next
     - hotfix
 
+deploy-to-production:
+  stage: deploy
+  script:
+      - create-package-from-bin $CI_PROJECT_NAME $CI_COMMIT_SHA
+      - sudo /opt/sysman/cmd/deploy/prod/products/snpseq-packs $CI_COMMIT_SHA
+  environment:
+    name: production
+    url: https://arteria-master.snpseq.medsci.uu.se
+  tags:
+    - deploys
+  only:
+    - master
+    - hotfix
+
 # NOTE: gitlab doesn't (yet) provide parameters to a manual step, so versioning
 # is handled by 4 different manual tasks (major, minor, patch, rc) HACK
 # https://gitlab.com/gitlab-org/gitlab-ce/issues/24935
