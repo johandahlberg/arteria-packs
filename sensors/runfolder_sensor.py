@@ -19,8 +19,7 @@ class RunfolderSensor(PollingSensor):
     def setup(self):
         self._infolog("setup")
         try:
-            self._load_config()
-            client_urls = self.config["runfolder_svc_urls"]
+            client_urls = self._config["runfolder_svc_urls"]
             self._client = RunfolderClient(client_urls, self._logger)
             self._infolog("Created client: {0}".format(self._client))
         except Exception as ex:
@@ -71,12 +70,6 @@ class RunfolderSensor(PollingSensor):
             payload['remote_user'] = self._hostconfigs[result['requesturl']].get('remote_user', "")
             payload['user_key'] = self._hostconfigs[result['requesturl']].get('user_key', "")
         self._sensor_service.dispatch(trigger=trigger, payload=payload, trace_tag=runfolder_name)
-
-    def _load_config(self):
-        config_path = "/opt/stackstorm/packs/snpseq_packs/config.yaml"
-        with open(config_path) as stream:
-            self.config = yaml.load(stream)
-            self._infolog("Loaded configuration from {}".format(config_path))
 
     def _infolog(self, msg):
         self._logger.info("[snpseq_packs." + self.__class__.__name__ + "] " + msg)
