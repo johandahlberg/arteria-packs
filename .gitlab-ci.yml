@@ -53,6 +53,7 @@ build:
     - develop
     - next
     - hotfix
+    - master
   artifacts:
     paths:
       - bin/
