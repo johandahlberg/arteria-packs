@@ -102,3 +102,11 @@ class TestPurgeRemoteFolders(unittest.TestCase):
             self.assertRaises(IOError, self.action.purge)
             get_files_and_folders.side_effect = ValueError("value error raised by mock")
             self.assertRaises(ValueError, self.action.purge)
+
+    def test_hostname(self):
+        mocked_hostname = "host.sequencing"
+        with mock.patch.object(socket, "gethostname", return_value=mocked_hostname) as socket_mock:
+            relative_directory = os.path.basename(self.directory)
+            expected_archive_dir = os.path.join("/data", mocked_hostname.replace(".sequencing", ""), relative_directory)
+            inst = PurgeRemoteFolders(relative_directory, self.age_in_days, self.dryrun, self.execution_id)
+            self.assertEqual(expected_archive_dir, inst.archive_base_dir)
