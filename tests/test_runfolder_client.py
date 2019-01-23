@@ -1,16 +1,18 @@
 
 import unittest
-import mock
+from unittest.mock import mock
+from unittest.mock import MagicMock
 
 import requests
 
 from runfolder_client import RunfolderClient
 
+
 class RunfolderClientTestCase(unittest.TestCase):
 
     def setUp(self):
         hosts = ['http://host1:11', 'http://host2:22']
-        mock_logger = mock.MagickMock()
+        mock_logger = MagicMock()
         self.runfolder_client = RunfolderClient(hosts=hosts, logger=mock_logger)
 
     class MockResponse():
