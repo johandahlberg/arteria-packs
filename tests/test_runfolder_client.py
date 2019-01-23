@@ -1,7 +1,7 @@
 
 import unittest
-from unittest.mock import mock
-from unittest.mock import MagicMock
+import mock
+from mock import MagicMock
 
 import requests
 
@@ -20,7 +20,7 @@ class RunfolderClientTestCase(unittest.TestCase):
             return "{'test': 'this'}"
 
     def test_next_ready(self):
-        with mock.object(requests, 'get', return_value=self.MockResponse()):
+        with mock.patch.object(requests, 'get', return_value=self.MockResponse()):
             res = self.runfolder_client.next_ready()
             self.assertDictEqual(res, {'response': {'test': 'this'}, 'requesturl': 'http://host1:11'})
 
