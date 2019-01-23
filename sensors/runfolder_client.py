@@ -26,10 +26,10 @@ class RunfolderClient():
                     self._logger.error("RunfolderClient: Got status_code={0} from "
                                        "endpoint {1}".format(resp.status_code, url))
                 else:
-                    json_resp = resp.text
+                    json_resp = resp.json()
                     self._logger.info("RunfolderClient: Successful call to {0}. {1}.".format(url, json_resp))
                     result = dict()
-                    result['response'] = json.loads(json_resp)
+                    result['response'] = json_resp
                     result['requesturl'] = url
                     return result 
             except requests.exceptions.ConnectionError:

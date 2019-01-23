@@ -16,8 +16,11 @@ class RunfolderClientTestCase(unittest.TestCase):
         self.runfolder_client = RunfolderClient(hosts=hosts, logger=mock_logger)
 
     class MockResponse():
-        def text(self):
-            return "{'test': 'this'}"
+        def __init__(self):
+            self.status_code = 200
+
+        def json(self):
+            return {'test': 'this'}
 
     def test_next_ready(self):
         with mock.patch.object(requests, 'get', return_value=self.MockResponse()):
