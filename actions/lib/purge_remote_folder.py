@@ -26,7 +26,8 @@ class PurgeRemoteFolders(object):
 
         # the directory to look for things to clean are constructed from e.g. the hostname of the machine
         # as a precaution, this is hardcoded here and can not be supplied as a parameter
-        hostname = socket.gethostname()
+        # also, remove the '.sequencing'-suffix if present
+        hostname = socket.gethostname().replace(".sequencing", "")
         self.archive_base_dir = self.sanitize_path(
             self.biotank_archive_folder,
             os.path.join(
