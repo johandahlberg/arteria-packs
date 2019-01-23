@@ -11,34 +11,25 @@ class RunfolderSensor(PollingSensor):
                                               config=config,
                                               poll_interval=poll_interval)
         self._logger = self._sensor_service.get_logger(__name__)
-        self._infolog("__init__")
         self._client = None
         self._trigger = trigger
         self._hostconfigs = {}
 
     def setup(self):
         self._infolog("setup")
-        try:
-            client_urls = self._config["runfolder_svc_urls"]
-            self._client = RunfolderClient(client_urls, self._logger)
-            self._infolog("Created client: {0}".format(self._client))
-        except Exception as ex:
-            # TODO: It seems that st2 isn't logging the entire exception, or
-            # they're not in /var/log/st2
-            self._logger.error(str(ex))
+        client_urls = self._config["runfolder_svc_urls"]
+        self._client = RunfolderClient(client_urls, self._logger)
+        self._infolog("Created client: {0}".format(self._client))
         self._infolog("setup finished")
 
     def poll(self):
-        try:
-            self._infolog("poll")
-            self._infolog("Checking for available runfolders")
-            result = self._client.next_ready()
-            self._infolog("Result from client: {0}".format(result))
+        self._infolog("poll")
+        self._infolog("Checking for available runfolders")
+        result = self._client.next_ready()
+        self._infolog("Result from client: {0}".format(result))
 
-            if result:
-                self._handle_result(result)
-        except Exception as ex:
-            self._logger.error(str(ex))
+        if result:
+            self._handle_result(result)
 
     def cleanup(self):
         self._infolog("cleanup")
