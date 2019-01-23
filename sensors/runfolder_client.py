@@ -1,7 +1,8 @@
-import requests
-import jsonpickle
 
-print "runfolder_client module loaded"
+import json
+
+import requests
+
 
 class RunfolderClient():
     """Pulls data from all known runfolder services. If there are issues with connecting
@@ -9,7 +10,6 @@ class RunfolderClient():
 
     def __init__(self, hosts, logger):
         """Initializes the client with a list of hosts""" 
-        logger.info("__init__ RunfolderClient")
         self._hosts = hosts
         self._logger = logger
 
@@ -23,21 +23,19 @@ class RunfolderClient():
             try:
                 resp = requests.get(url)
                 if resp.status_code != 200:
-                    self._logger.error("RunfolderClient: Got status_code={0} from endpoint {1}".
-                        format(resp.status_code, url))
+                    self._logger.error("RunfolderClient: Got status_code={0} from "
+                                       "endpoint {1}".format(resp.status_code, url))
                 else:
-                    json = resp.text
-                    self._logger.debug("RunfolderClient: Successful call to {0}. {1}.".
-                        format(url, json))
+                    json_resp = resp.text
+                    self._logger.info("RunfolderClient: Successful call to {0}. {1}.".format(url, json_resp))
                     result = dict()
-                    result['response'] = jsonpickle.decode(json)
+                    result['response'] = json.loads(json_resp)
                     result['requesturl'] = url
                     return result 
             except requests.exceptions.ConnectionError:
-               self._logger.error("RunfolderClient: Not able to connect to host {0}".format(host))
+                self._logger.error("RunfolderClient: Not able to connect to host {0}".format(host))
         return None
                 
-
     def all_ready(self):
         """Pulls all ready runfolders, allowing the rule engine to choose between them"""
         # TODO: Implement
