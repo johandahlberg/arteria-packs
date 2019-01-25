@@ -332,7 +332,7 @@ workflows:
               input:
                 hosts: <% $.host %>
                 source: <% $.folder %>
-                destination: /data/<% $.host %>/<% $.biotank_archive_folder %>
+                destination: /data/<% $.host.replace(".sequencing", "") %>/<% $.biotank_archive_folder %>
                 private_key: <% $.biotank_user_key %>
 
             ## END CLEANUP ##
