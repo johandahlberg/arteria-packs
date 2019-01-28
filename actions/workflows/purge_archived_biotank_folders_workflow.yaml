@@ -45,6 +45,7 @@ workflows:
                 biotank_archive_folder: <% $.biotank_archive_folder %>
                 age_in_days: <% $.age_in_days %>
                 dryrun: <% $.dryrun %>
+                timeout: 300
               publish:
                 purged: <% task(purge_archived).result %>
               on-success:
