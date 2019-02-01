@@ -89,3 +89,25 @@ class TestCheckClarityContactsInSupr(BaseActionTestCase):
             # Email marked with dashes should be ignored, and thus
             # the results should be empty here
             self.assertFalse(results)
+
+    def test_non_utf8_names(self):
+        alt_mock_proj = self.MockProject('proj1')
+
+        alt_mock_proj.udf = {'Name of PI': 'A. Bson',
+                             'Email of PI': 'pi@example.com',
+                             'Name of bioinformatics responsible person': 'N. Mson',
+                             'Email of bioinformatics responsible person': 'bioinfo@example.com'}
+
+        with mock.patch.object(CheckClarityContactsInSupr,
+                               'fetch_open_projects',
+                               return_value=[alt_mock_proj]), \
+             mock.patch.object(SuprUtils,
+                               'search_by_email',
+                               side_effect=NoHitForEmailInSupr):
+
+            action = self.get_action_instance()
+            exit_status, results = action.run(supr_api_url='http://example.com',
+                                              supr_api_user='user',
+                                              supr_api_key='key')
+
+            self.assertTrue(u"A. Bson (PI), has no email registered in Supr." in results)
