@@ -24,7 +24,6 @@ workflows:
           supr_api_url: <% task(get_config).result.result.supr_api_url %>
           project_coordinator_email_adress: <% task(get_config).result.result.project_coordinator_email_adress %>
           send_mail_to: <% task(get_config).result.result.send_mail_to %>
-          delivery_workflow_status_slack_channel: <% task(get_config).result.result.delivery_workflow_status_slack_channel %>
         on-success:
           - check_clarity_contacts_in_supr
 

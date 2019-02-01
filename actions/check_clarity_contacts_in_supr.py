@@ -11,6 +11,10 @@ import requests.packages.urllib3
 requests.packages.urllib3.disable_warnings()
 
 
+class NoEmailInClarity(AssertionError):
+    pass
+
+
 class CheckClarityContactsInSupr(Action):
     """
     Retrives contacts from open projects in ClarityLIMS and checks for
@@ -28,19 +32,42 @@ class CheckClarityContactsInSupr(Action):
                 filtered_projects.append(project)
         return filtered_projects
 
-    def check_email_in_supr(self, email_adress):
-        email_missing = False
-        email_multi = False
-
+    def check_email_of_role(self, project, role):
         try:
-            supr_id = SuprUtils.search_by_email(self.supr_api_url, email_adress, self.supr_api_user, self.supr_api_key)
-        except AssertionError as ae:
-            if ("no hits" in ae.message):
-                email_missing = True
-            elif ("more than one" in ae.message):
-                email_multi = True
+            email = project.udf.get("Email of {}".format(role))
+            if email:
+                email = email.strip()
+            name = project.udf.get("Name of {}".format(role)) or "Name missing from LIMS"
 
-        return (email_missing, email_multi)
+            if not email:
+                raise NoEmailInClarity()
+            # Normal dashes and en dashes are used to indicate that the field is intentionally left blank
+            if email == '-' or email == u'\u2013' or email == 'N/A':
+                return None
+
+            SuprUtils.search_by_email(self.supr_api_url, email, self.supr_api_user, self.supr_api_key)
+        except NoHitForEmailInSupr:
+            self.logger.info(u"{} had no email registered in Supr for role: {}. Email was: {}".format(project.name,
+                                                                                                      role,
+                                                                                                      email))
+            return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
+                                                       u"has no email registered in Supr.")
+        except MoreThanOneHitForEmailInSuper:
+            self.logger.info(u"{} had multiple accounts for email"
+                             u" registered in Supr for role: {}. Email was: ".format(project.name, role, email))
+            return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
+                                                      u"appears to have multiple accounts "
+                                                      u"registered in Supr, for that email. "
+                                                      u"This is very odd...")
+        except NoEmailInClarity:
+            return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
+                                                       u"has no email registered in Clarity.")
+        except Exception as exc:
+            self.logger.error(exc)
+            return u"There was a problem with {}. " \
+                   u"Please investigate further. The error message was: {}\n".format(project.name,
+                                                                                     exc.message)
+        return None
 
     def run(self, supr_api_url, supr_api_user, supr_api_key):
 
@@ -53,14 +80,9 @@ class CheckClarityContactsInSupr(Action):
         for project in projects:
             roles = ["PI", "bioinformatics responsible person"]
             for role in roles:
-                email = project.udf.get("Email of {}".format(role))
-                if not email:
-                    continue
-                (account_missing, multiple_accounts) = self.check_email_in_supr(email.strip())
-                if not (account_missing or multiple_accounts):
-                    continue
-                name = project.udf.get("Name of {}".format(role)) or "Name missing from LIMS"
-                email_body += "{}: {} {} SUPR {}<br><hr>".format(project.name, role, "missing from" if account_missing else "has multiple accounts in", "( {}, {} )".format(name, email))
+                email_text = self.check_email_of_role(project, role)
+                if email_text:
+                    email_body += email_text
 
-        return (True, email_body)
+        return True, email_body
 

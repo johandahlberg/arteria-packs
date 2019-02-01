@@ -5,6 +5,15 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from lib.retry_session import RetrySession
 
+
+class NoHitForEmailInSupr(AssertionError):
+    pass
+
+
+class MoreThanOneHitForEmailInSuper(AssertionError):
+    pass
+
+
 class SuprUtils:
 
     DATE_FORMAT = '%Y-%m-%d'
@@ -24,10 +33,10 @@ class SuprUtils:
         matches = response_as_json["matches"]
 
         if len(matches) < 1:
-            raise AssertionError("There were no hits in SUPR for email: {}".format(email))
+            raise NoHitForEmailInSupr("There were no hits in SUPR for email: {}".format(email))
 
         if len(matches) > 1:
-            raise AssertionError("There we more than one hit in SUPR for email: {}".format(email))
+            raise MoreThanOneHitForEmailInSuper("There we more than one hit in SUPR for email: {}".format(email))
 
         return matches[0]["id"]
 

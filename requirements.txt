@@ -2,3 +2,4 @@ requests
 click
 tabulate
 pyyaml
+genologics

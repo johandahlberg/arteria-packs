@@ -235,3 +235,7 @@ supr_api_url:
   description: "SUPR URL"
   type: "string"
   required: true
+project_coordinator_email_adress:
+  description: "Email adress to used by project coordinators"
+  type: "string"
+  required: true
