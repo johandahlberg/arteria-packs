@@ -50,18 +50,18 @@ class CheckClarityContactsInSupr(Action):
             self.logger.info(u"{} had no email registered in Supr for role: {}. Email was: {}".format(project.name,
                                                                                                       role,
                                                                                                       email))
-            return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
-                                                       u"has no email registered in Supr.")
+            return u"{}: {} ({}), {}".format(project.name, name, role,
+                                             u"has no email registered in Supr.")
         except MoreThanOneHitForEmailInSuper:
             self.logger.info(u"{} had multiple accounts for email"
                              u" registered in Supr for role: {}. Email was: ".format(project.name, role, email))
-            return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
-                                                      u"appears to have multiple accounts "
-                                                      u"registered in Supr, for that email. "
-                                                      u"This is very odd...")
+            return u"{}: {} ({}), {}".format(project.name, name, role,
+                                             u"appears to have multiple accounts "
+                                             u"registered in Supr, for that email. "
+                                             u"This is very odd...")
         except NoEmailInClarity:
-            return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
-                                                       u"has no email registered in Clarity.")
+            return u"{}: {} ({}), {}".format(project.name, name, role,
+                                             u"has no email registered in Clarity.")
         return None
 
     def run(self, supr_api_url, supr_api_user, supr_api_key):
@@ -77,7 +77,7 @@ class CheckClarityContactsInSupr(Action):
             for role in roles:
                 email_text = self.check_email_of_role(project, role)
                 if email_text:
-                    email_body += email_text
+                    email_body += u"{} <br><hr>\n".format(email_text)
 
         return True, email_body
 
