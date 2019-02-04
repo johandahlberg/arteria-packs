@@ -10,6 +10,10 @@ from check_clarity_contacts_in_supr import CheckClarityContactsInSupr, NoEmailIn
 class TestCheckClarityContactsInSupr(BaseActionTestCase):
     action_cls = CheckClarityContactsInSupr
 
+    SUPR_ARGS = {'supr_api_url': 'http://example.com',
+                 'supr_api_user': 'user',
+                 'supr_api_key': 'key'}
+
     class MockProject(object):
         def __init__(self, name):
             self.name = name
@@ -28,9 +32,7 @@ class TestCheckClarityContactsInSupr(BaseActionTestCase):
                                   return_value="some-fake-id"):
 
             action = self.get_action_instance()
-            exit_status, results = action.run(supr_api_url='http://example.com',
-                                              supr_api_user='user',
-                                              supr_api_key='key')
+            exit_status, results = action.run(**self.SUPR_ARGS)
             # If there is an email in supr, the results should be
             # empty
             self.assertFalse(results)
@@ -45,9 +47,7 @@ class TestCheckClarityContactsInSupr(BaseActionTestCase):
                                side_effect=NoHitForEmailInSupr()):
 
             action = self.get_action_instance()
-            exit_status, results = action.run(supr_api_url='http://example.com',
-                                              supr_api_user='user',
-                                              supr_api_key='key')
+            exit_status, results = action.run(**self.SUPR_ARGS)
 
             self.assertTrue(u"Pär Tyrsson (PI), has no email registered in Supr." in results)
 
@@ -61,9 +61,7 @@ class TestCheckClarityContactsInSupr(BaseActionTestCase):
                                side_effect=NoEmailInClarity()):
 
             action = self.get_action_instance()
-            exit_status, results = action.run(supr_api_url='http://example.com',
-                                              supr_api_user='user',
-                                              supr_api_key='key')
+            exit_status, results = action.run(**self.SUPR_ARGS)
 
             self.assertTrue(u"Åsa Öman (bioinformatics responsible person), "
                             u"has no email registered in Clarity." in results)
@@ -106,8 +104,6 @@ class TestCheckClarityContactsInSupr(BaseActionTestCase):
                                side_effect=NoHitForEmailInSupr):
 
             action = self.get_action_instance()
-            exit_status, results = action.run(supr_api_url='http://example.com',
-                                              supr_api_user='user',
-                                              supr_api_key='key')
+            exit_status, results = action.run(**self.SUPR_ARGS)
 
             self.assertTrue(u"A. Bson (PI), has no email registered in Supr." in results)
