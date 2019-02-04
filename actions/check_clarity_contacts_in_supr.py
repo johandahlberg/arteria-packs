@@ -62,11 +62,6 @@ class CheckClarityContactsInSupr(Action):
         except NoEmailInClarity:
             return u"{}: {} ({}), {}<br><hr>\n".format(project.name, name, role,
                                                        u"has no email registered in Clarity.")
-        except Exception as exc:
-            self.logger.error(exc)
-            return u"There was a problem with {}. " \
-                   u"Please investigate further. The error message was: {}\n".format(project.name,
-                                                                                     exc.message)
         return None
 
     def run(self, supr_api_url, supr_api_user, supr_api_key):
