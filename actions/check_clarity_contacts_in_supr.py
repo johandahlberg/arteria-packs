@@ -77,7 +77,7 @@ class CheckClarityContactsInSupr(Action):
             for role in roles:
                 email_text = self.check_email_of_role(project, role)
                 if email_text:
-                    email_body += u"{} <br><hr>\n".format(email_text)
+                    email_body += u"{} <br><hr>".format(email_text)
 
         return True, email_body
 
