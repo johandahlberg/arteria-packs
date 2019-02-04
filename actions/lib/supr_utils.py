@@ -26,17 +26,17 @@ class SuprUtils:
         response = requests.get(search_person_url, params=params, auth=(user, key))
 
         if response.status_code != 200:
-            raise AssertionError("Status code returned when trying to get PI id for email: "
-                                 "{} was not 200. Response was: {}".format(email, response.content))
+            raise AssertionError(u"Status code returned when trying to get PI id for email: "
+                                 u"{} was not 200. Response was: {}".format(email, response.content))
 
         response_as_json = json.loads(response.content)
         matches = response_as_json["matches"]
 
         if len(matches) < 1:
-            raise NoHitForEmailInSupr("There were no hits in SUPR for email: {}".format(email))
+            raise NoHitForEmailInSupr(u"There were no hits in SUPR for email: {}".format(email))
 
         if len(matches) > 1:
-            raise MoreThanOneHitForEmailInSuper("There we more than one hit in SUPR for email: {}".format(email))
+            raise MoreThanOneHitForEmailInSuper(u"There we more than one hit in SUPR for email: {}".format(email))
 
         return matches[0]["id"]
 
